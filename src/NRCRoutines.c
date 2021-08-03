@@ -732,7 +732,7 @@ void choldc(double **a, int n, double *p)
 			{
                                 if (sum <= 0.0)
                                 {
-                                        printf("choldc failed\n");
+                                        // printf("choldc failed\n");
 	                                flag = 1;
                                 }
 
