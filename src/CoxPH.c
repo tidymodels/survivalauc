@@ -162,7 +162,7 @@ double *coxph_EDelta, *coxph_EY, *coxph_EuniqY, **coxph_EX, *coxph_Ebeta,
 	**coxph_d2theta, **coxph_cov;
 
 // Allocate memory to external variables
-void coxph_alloc_memory(n, p)
+void coxph_alloc_memory(long n, long p)
 {
         coxph_ElocY = ivector(1, n);
         coxph_EDelta = dvector(1, n);
@@ -181,7 +181,7 @@ void coxph_alloc_memory(n, p)
         coxph_cov = dmatrix(1, p+n, 1, p+n);
 }
 // Free memory for external variables
-void coxph_free_memory(n, p)
+void coxph_free_memory(long n, long p)
 {
         free_ivector(coxph_ElocY, 1, n);
         free_dvector(coxph_EDelta, 1, n);
