@@ -38,6 +38,10 @@
  *
  */
 
+#include "CoxPH.h"
+#include "nrutil.h"
+#include <math.h>
+
 /*
  *  Subroutine: locate_pos()
  *

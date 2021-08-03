@@ -1,5 +1,10 @@
+#include "nrutil.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 /*
- Routines from Numerical Recipes in C
+ * Routines from Numerical Recipes in C
  */
 #define NR_END 1
 #define FREE_ARG char*

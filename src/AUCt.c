@@ -32,6 +32,11 @@
  *
  */
 
+#include "AUCt.h"
+#include "CoxPH.h"
+#include "nrutil.h"
+#include <math.h>
+
 void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, int *m, double *uniqY,
           double **sens, double **spec, double *auc)
 {
