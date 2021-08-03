@@ -38,6 +38,10 @@
  *
  */
 
+#include "CoxPH.h"
+#include "nrutil.h"
+#include <math.h>
+
 /*
  *  Subroutine: locate_pos()
  *
@@ -57,9 +61,7 @@
 
 int locate_pos(double *a, int start, int end, double x)
 {
-        int i,bn,loc,mina;
-
-        bn = (int)((end+start)/2);
+        int bn = (int)((end+start)/2);
 
         if (x >= a[end])
         {
@@ -101,7 +103,7 @@ int locate_pos(double *a, int start, int end, double x)
  */
 void DataM(int n, double *Y, double *D, int *L, double *uniqY, int *locY)
 {
-        int i,j,k,l,*d;
+        int i,j,*d;
         double *ft,*delta;
 
         ft = dvector(1,n); d = ivector(1,n);
@@ -158,7 +160,7 @@ double *coxph_EDelta, *coxph_EY, *coxph_EuniqY, **coxph_EX, *coxph_Ebeta,
 	**coxph_d2theta, **coxph_cov;
 
 // Allocate memory to external variables
-void coxph_alloc_memory(n, p)
+void coxph_alloc_memory(long n, long p)
 {
         coxph_ElocY = ivector(1, n);
         coxph_EDelta = dvector(1, n);
@@ -177,7 +179,7 @@ void coxph_alloc_memory(n, p)
         coxph_cov = dmatrix(1, p+n, 1, p+n);
 }
 // Free memory for external variables
-void coxph_free_memory(n, p)
+void coxph_free_memory(long n, long p)
 {
         free_ivector(coxph_ElocY, 1, n);
         free_dvector(coxph_EDelta, 1, n);
@@ -222,7 +224,7 @@ void coxph_free_memory(n, p)
 double coxph_logL(int n, int p, int *locY, double *Delta, double **X, double *beta,
         int L, double *lambda)
 {
-        int i, j, k, l;
+        int i, j;
         double *Lambda, betaX, expbetaX, sum;
 
         Lambda = dvector(1, L);
@@ -275,8 +277,8 @@ double coxph_logL(int n, int p, int *locY, double *Delta, double **X, double *be
 void coxph_d1logL(int n, int p, int *locY, double *Delta, double **X, double *beta,
         int L, double *lambda, double *d1beta, double *d1lambda)
 {
-        int i, j, k, l;
-        double *Lambda, betaX, expbetaX, tmp;
+        int i, j;
+        double *Lambda, betaX, expbetaX;
 
         Lambda = dvector(1, L);
 
@@ -386,7 +388,7 @@ void coxph_d2logL(int n, int p, int *locY, double *Delta, double **X, double *be
 // negative log-likelihood
 double coxph_ElogL(double *theta)
 {
-        int i, j, k;
+        int j;
         double sum;
 
         for (j=1; j<=coxph_Ep; j++)
@@ -403,7 +405,7 @@ double coxph_ElogL(double *theta)
 // first derivatives of the negative log-likelihood function
 void coxph_Ed1logL(double *theta, double *d1theta)
 {
-        int i, j, k;
+        int j;
 
         for (j=1; j<=coxph_Ep; j++)
                 coxph_Ebeta[j] = theta[j];
@@ -424,7 +426,7 @@ void coxph_Ed1logL(double *theta, double *d1theta)
 // second derivatives of the negative log-likelihood function
 void coxph_Ed2logL(double *theta, double **d2theta)
 {
-        int i, j, k;
+        int j;
 
         for (j=1; j<=coxph_Ep; j++)
                 coxph_Ebeta[j] = theta[j];
@@ -439,7 +441,7 @@ void coxph_Ed2logL(double *theta, double **d2theta)
 void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, double *lambda,
 	double *Lambda, int *L, double *uniqY, int *locY, double *betase, double **cov)
 {
-	int i, j, k, iter;
+	int i, j, iter;
 	double f1;
 
 	// allocate memory

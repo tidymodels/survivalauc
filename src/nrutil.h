@@ -31,6 +31,16 @@ static int imaxarg1,imaxarg2;
 static int iminarg1,iminarg2;
 #define IMIN(a,b) (iminarg1=(a),iminarg2=(b),(iminarg1) < (iminarg2) ? (iminarg1) : (iminarg2))
 #define SIGN(a,b) ((b) >= 0.0 ? fabs(a) : -fabs(a))
+
+// -----------------------------------------------------------------------------
+
+// Used in CoxPH.c
+void sort2(int n, double ra[], double rb[]);
+void dfpmin(double p[], int n, double ftol, int* iter, double* fret, double (*func)(), void (*dfunc)());
+void dmatrix_inv(double **A, double **invA, int n);
+
+// -----------------------------------------------------------------------------
+
 #if defined(__STDC__) || defined(ANSI) || defined(NRANSI) /* ANSI */
 
 void nrerror(char error_text[]);

@@ -1,5 +1,10 @@
+#include "nrutil.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 /*
- Routines from Numerical Recipes in C
+ * Routines from Numerical Recipes in C
  */
 #define NR_END 1
 #define FREE_ARG char*
@@ -8,10 +13,10 @@ int ludcmp_flag, flag;
 void nrerror(char error_text[])
 /* Numerical Recipes standard error handler */
 {
-        fprintf(stderr,"Numerical Recipes run-time error...\n");
-        fprintf(stderr,"%s\n",error_text);
-        fprintf(stderr,"...now exiting to system...\n");
-        exit(1);
+        //fprintf(stderr,"Numerical Recipes run-time error...\n");
+        //fprintf(stderr,"%s\n",error_text);
+        //fprintf(stderr,"...now exiting to system...\n");
+        //exit(1);
 }
 
 float *vector(long nl, long nh)
@@ -463,7 +468,7 @@ double gamdev(int ia, long *idum)
 
 void tdev(int df, int dim, double *trannum, long *idum)
 {
-	int i,j;
+	int i;
 	double Y;
 
 	Y = gamdev(df/2.0,idum)*2; Y = sqrt(Y/df);
@@ -717,9 +722,8 @@ void choldc(double **a, int n, double *p)
         diagonal elements which are return in p[1..n]
 */
 {
-        int i,j,k,l,m;
+        int i,j,k;
         double sum;
-        char temp;
 
         for (i=1;i<=n;i++) {
                 for (j=i;j<=n;j++) {
@@ -728,7 +732,7 @@ void choldc(double **a, int n, double *p)
 			{
                                 if (sum <= 0.0)
                                 {
-                                        printf("choldc failed\n");
+                                        // printf("choldc failed\n");
 	                                flag = 1;
                                 }
 
@@ -820,7 +824,7 @@ void linmin(p,xi,n,fret,func)
 double p[],xi[],*fret,(*func)();
 int n;
 {
-        int i,j;
+        int j;
         double xx,xmin,fx,fb,fa,bx,ax;
         double brent(),f1dim(),*dvector();
         void mnbrak(),free_dvector();

@@ -32,10 +32,15 @@
  *
  */
 
+#include "AUCt.h"
+#include "CoxPH.h"
+#include "nrutil.h"
+#include <math.h>
+
 void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, int *m, double *uniqY,
           double **sens, double **spec, double *auc)
 {
-    int i, j, p, *locY;
+    int p, *locY;
     double **SurvEst, *ESurvEst;
 
     p = 1; // number of covariates
@@ -101,7 +106,7 @@ void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, in
 void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, int *locY,
                 double **SurvEst, double *ESurvEst)
 {
-    int i, j, p;
+    int i, p;
     double **tmpZ, *beta, *betase, **cov, *lambda, *Lambda;
 
     p = 1; // number of covariates
