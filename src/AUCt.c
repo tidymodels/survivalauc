@@ -37,17 +37,17 @@ void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, in
 {
     int i, j, p, *locY;
     double **SurvEst, *ESurvEst;
-    
+
     p = 1; // number of covariates
     locY = ivector(1, *n);
-    
+
     // Data processing before fitting survival models
     // Output:
     //  m = number of distinct observed failure times
     //  uniqY = distinct observed failure times in an ascending order, m by 1 vector
     //  locY = n by 1 vector; locY[i] = j, where j is the largest integer such that uniqY[j] <= Y[i]
-    DataM(*n, Y, D, m, uniqY, locY); 
-    
+    DataM(*n, Y, D, m, uniqY, locY);
+
     // Fit a Cox model with risk score Z as covariates to obtain the survival function estimates
     // Output:
     //  SurvEst = m by n matrix, the [i,j] element corresponds to the survival function estimate at
@@ -59,18 +59,18 @@ void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, in
     SurvEst = dmatrix(1, *m, 1, *n);
     ESurvEst = dvector(1, *m);
     coxph_surv(n, Y, D, Z, m, uniqY, locY, SurvEst, ESurvEst);
-        
+
     // estimate sensitivity and specificity at each distinct observed failure time with a set of thresholds
     sens_spec(*n, *m, *k, Z, threshold, SurvEst, ESurvEst, sens, spec);
-    
+
     // estimate AUC at each distinct observed failure time
     AUC(*n, *m, Z, SurvEst, ESurvEst, auc);
-    
+
     free_ivector(locY, 1, *n);
-    
+
     free_dmatrix(SurvEst, 1, *m, 1, *n);
     free_dvector(ESurvEst, 1, *m);
-    
+
 }
 
 /*
@@ -103,7 +103,7 @@ void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, 
 {
     int i, j, p;
     double **tmpZ, *beta, *betase, **cov, *lambda, *Lambda;
-    
+
     p = 1; // number of covariates
     tmpZ = dmatrix(1, *n, 1, p); // convert Z to a n by 1 matrix
     beta = dvector(1, p); // regression coefficient in the Cox model
@@ -113,8 +113,8 @@ void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, 
     cov = dmatrix(1, *n+p, 1, *n+p); // covariance matrix estimate
     lambda = dvector(1, *n);
     Lambda = dvector(1, *n);
-    
-    
+
+
     // Fit a Cox model with risk score Z as the covariate to obtain the survival function estimates
     // Output:
     //  lambda = baseline hazard estimate; m by 1 vector; ith element corresponds to the jump size of
@@ -125,11 +125,11 @@ void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, 
     //  betase = standard error estimate of betahat
     //  cov = (m+p) by (m+p) matrix, inverse of the negative second derivatives of the log-likelihood
     coxph(*n, Y, D, p, tmpZ, beta, lambda, Lambda, m, uniqY, locY, betase, cov);
-    
+
     // call the ESurv subroutine to calculate the survival estimates at each distinct observed failure time
     // for each subject and the empirical estimate of E(S(t|Z))
     ESurv(*n, Z, *m, uniqY, Lambda, beta[1], SurvEst, ESurvEst);
-    
+
     free_dmatrix(tmpZ, 1, *n, 1, p);
     free_dvector(beta, 1, p);
     free_dvector(betase, 1, p);
@@ -163,7 +163,7 @@ void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, 
 void ESurv(int n, double *Z, int m, double *uniqY, double *Lambda, double beta, double **SurvEst, double *ESurvEst)
 {
     int i, j;
-    
+
     for (i=1; i<=m; i++)
     {
         ESurvEst[i] = 0;
@@ -207,7 +207,7 @@ void sens_spec(int n, int m, int k, double *Z, double *threshold, double **SurvE
 {
     int i, j, l;
     double sens_num, spec_num;
-    
+
     for (i=1; i<=m; i++)
         for (j=1; j<=k; j++)
         {
@@ -253,7 +253,7 @@ void AUC(int n, int m, double *Z, double **SurvEst, double *ESurvEst, double *au
 {
     int i, j, l;
     double auc_num;
-    
+
     for (i=1; i<=m; i++)
     {
         // time point: uniqY[i]
@@ -266,7 +266,7 @@ void AUC(int n, int m, double *Z, double **SurvEst, double *ESurvEst, double *au
             else if (Z[j] < Z[l]) auc_num += SurvEst[i][j]*(1 - SurvEst[i][l]);
         }
         auc_num /= n*(n-1);
-        
+
         auc[i] = auc_num/(ESurvEst[i]*(1-ESurvEst[i]));
     }
 }

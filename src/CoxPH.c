@@ -77,7 +77,7 @@ int locate_pos(double *a, int start, int end, double x)
         {
                 return locate_pos(a, bn+1, end, x);
         }
-    
+
     return 0;
 }
 
@@ -234,10 +234,10 @@ double coxph_logL(int n, int p, int *locY, double *Delta, double **X, double *be
         sum = 0;
         for (i=1; i<=n; i++)
         {
-                betaX = 0; 
+                betaX = 0;
                 for (j=1; j<=p; j++)
                         betaX += beta[j]*X[i][j];
-                expbetaX = exp(betaX); 
+                expbetaX = exp(betaX);
 
 		if (locY[i] > 0)
 		sum += Delta[i]*(betaX + log(lambda[locY[i]])) - Lambda[locY[i]]*expbetaX;
@@ -291,10 +291,10 @@ void coxph_d1logL(int n, int p, int *locY, double *Delta, double **X, double *be
         for (i=1; i<=n; i++)
         {
 		if (locY[i] > 0) {
-                betaX = 0; 
+                betaX = 0;
                 for (j=1; j<=p; j++)
                         betaX += beta[j]*X[i][j];
-                expbetaX = exp(betaX); 
+                expbetaX = exp(betaX);
 
                 for (j=1; j<=p; j++)
                         d1beta[j] += (Delta[i]-Lambda[locY[i]]*expbetaX)*X[i][j];
@@ -354,10 +354,10 @@ void coxph_d2logL(int n, int p, int *locY, double *Delta, double **X, double *be
         {
 		if (locY[i] > 0)
 		{
-                betaX = 0; 
+                betaX = 0;
                 for (j=1; j<=p; j++)
                         betaX += beta[j]*X[i][j];
-                expbetaX = exp(betaX); 
+                expbetaX = exp(betaX);
 
                 // d beta d beta
                 tmp = Lambda[locY[i]]*expbetaX;
@@ -371,7 +371,7 @@ void coxph_d2logL(int n, int p, int *locY, double *Delta, double **X, double *be
 
                 // d lambda d lambda
                 d2theta[p+locY[i]][p+locY[i]] += Delta[i]/
-                        pow(lambda[locY[i]],2.0);	
+                        pow(lambda[locY[i]],2.0);
 		}
         }
 
@@ -441,14 +441,14 @@ void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, dou
 {
 	int i, j, k, iter;
 	double f1;
-    
+
 	// allocate memory
 	coxph_alloc_memory(n, p);
 
 	// Data
 	coxph_En = n;
 	coxph_Ep = p;
-	for (i=1; i<=n; i++) 
+	for (i=1; i<=n; i++)
 	{
 		coxph_EY[i] = Y[i];
 		coxph_EDelta[i] = Delta[i];
@@ -465,7 +465,7 @@ void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, dou
 		coxph_theta[coxph_Ep+j] = log(1.0/coxph_EL);
 
     // call the quasi-Newton algorithm
-	dfpmin(coxph_theta, coxph_Ep+coxph_EL, 1.0e-12, &iter, 
+	dfpmin(coxph_theta, coxph_Ep+coxph_EL, 1.0e-12, &iter,
 		&f1, coxph_ElogL, coxph_Ed1logL);
 
 
@@ -481,11 +481,11 @@ void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, dou
 	}
 	// L
 	*L = coxph_EL;
-	// uniqY 
+	// uniqY
 	for (j=1; j<=coxph_EL; j++)
 		uniqY[j] = coxph_EuniqY[j];
 	// locY
-	for (i=1; i<=n; i++)	
+	for (i=1; i<=n; i++)
 		locY[i] = coxph_ElocY[i];
 	// d2theta
 	coxph_Ed2logL(coxph_theta, coxph_d2theta);
@@ -495,7 +495,7 @@ void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, dou
 	for (j=1; j<=p; j++)
 		betase[j] = sqrt(cov[j][j]);
 
-	coxph_free_memory(n, p);	
+	coxph_free_memory(n, p);
 }
 
 // Given the NPMLEs of beta and jump sizes of baseline cumulative hazard, calculate
