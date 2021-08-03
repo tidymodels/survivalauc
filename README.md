@@ -4,6 +4,10 @@
 # survivalauc
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/tidymodels/survivalauc/branch/master/graph/badge.svg)](https://codecov.io/gh/tidymodels/survivalauc?branch=master)
+[![R-CMD-check](https://github.com/tidymodels/survivalauc/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/survivalauc/actions)
 <!-- badges: end -->
 
 The goal of survivalauc is to …
