@@ -468,7 +468,7 @@ double gamdev(int ia, long *idum)
 
 void tdev(int df, int dim, double *trannum, long *idum)
 {
-	int i,j;
+	int i;
 	double Y;
 
 	Y = gamdev(df/2.0,idum)*2; Y = sqrt(Y/df);
@@ -722,9 +722,8 @@ void choldc(double **a, int n, double *p)
         diagonal elements which are return in p[1..n]
 */
 {
-        int i,j,k,l,m;
+        int i,j,k;
         double sum;
-        char temp;
 
         for (i=1;i<=n;i++) {
                 for (j=i;j<=n;j++) {
@@ -825,7 +824,7 @@ void linmin(p,xi,n,fret,func)
 double p[],xi[],*fret,(*func)();
 int n;
 {
-        int i,j;
+        int j;
         double xx,xmin,fx,fb,fa,bx,ax;
         double brent(),f1dim(),*dvector();
         void mnbrak(),free_dvector();
