@@ -30,5 +30,8 @@ SEXP survivalauc_compute_auc_components(SEXP time,
 
   AUCt(&n, Y, D, Z, &k, threshold, &m, uniqY, sens, spec, auc);
 
-  return R_NilValue;
+  SEXP res = PROTECT(Rf_allocVector(VECSXP, 4));
+  UNPROTECT(1);
+
+  return res;
 }
