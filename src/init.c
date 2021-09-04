@@ -4,10 +4,10 @@
 #include <R_ext/Rdynload.h>
 
 // .Call calls
-extern SEXP survivalauc_compute_auc_components(SEXP, SEXP, SEXP, SEXP);
+extern SEXP survivalauc_compute_auc_components(SEXP, SEXP, SEXP, SEXP, SEXP);
 
 static const R_CallMethodDef CallEntries[] = {
-  {"survivalauc_compute_auc_components", (DL_FUNC) &survivalauc_compute_auc_components, 4},
+  {"survivalauc_compute_auc_components", (DL_FUNC) &survivalauc_compute_auc_components, 5},
   {NULL, NULL, 0}
 };
 
