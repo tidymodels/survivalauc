@@ -70,12 +70,6 @@ void AUCt(int *n, double *Y, double *D, double *Z, int *k, double *threshold, in
 
     // estimate AUC at each distinct observed failure time
     AUC(*n, *m, Z, SurvEst, ESurvEst, auc);
-
-    free_ivector(locY, 1, *n);
-
-    free_dmatrix(SurvEst, 1, *m, 1, *n);
-    free_dvector(ESurvEst, 1, *m);
-
 }
 
 /*
@@ -134,13 +128,6 @@ void coxph_surv(int *n, double *Y, double *D, double *Z, int *m, double *uniqY, 
     // call the ESurv subroutine to calculate the survival estimates at each distinct observed failure time
     // for each subject and the empirical estimate of E(S(t|Z))
     ESurv(*n, Z, *m, uniqY, Lambda, beta[1], SurvEst, ESurvEst);
-
-    free_dmatrix(tmpZ, 1, *n, 1, p);
-    free_dvector(beta, 1, p);
-    free_dvector(betase, 1, p);
-    free_dmatrix(cov, 1, *n+p, 1, *n+p);
-    free_dvector(lambda, 1, *n);
-    free_dvector(Lambda, 1, *n);
 }
 
 /*

@@ -8,7 +8,6 @@
  * Routines from Numerical Recipes in C
  */
 #define NR_END 1
-#define FREE_ARG char*
 int ludcmp_flag, flag;
 
 void nrerror(char error_text[])
@@ -212,76 +211,7 @@ float ***f3tensor(long nrl, long nrh, long ncl, long nch, long ndl, long ndh)
         /* return pointer to array of pointers to rows */
         return t;
 }
-void free_vector(float *v, long nl, long nh)
-/* free a float vector allocated with vector() */
-{
-        free((FREE_ARG) (v+nl-NR_END));
-}
 
-void free_ivector(int *v, long nl, long nh)
-/* free an int vector allocated with ivector() */
-{
-        free((FREE_ARG) (v+nl-NR_END));
-}
-
-void free_cvector(unsigned char *v, long nl, long nh)
-/* free an unsigned char vector allocated with cvector() */
-{
-        free((FREE_ARG) (v+nl-NR_END));
-}
-
-void free_lvector(unsigned long *v, long nl, long nh)
-/* free an unsigned long vector allocated with lvector() */
-{
-        free((FREE_ARG) (v+nl-NR_END));
-}
-
-void free_dvector(double *v, long nl, long nh)
-/* free a double vector allocated with dvector() */
-{
-        free((FREE_ARG) (v+nl-NR_END));
-}
-
-void free_dmatrix(double **m, long nrl, long nrh, long ncl, long nch)
-/* free a double matrix allocated by dmatrix() */
-{
-        free((FREE_ARG) (m[nrl]+ncl-NR_END));
-        free((FREE_ARG) (m+nrl-NR_END));
-}
-
-void free_imatrix(int **m, long nrl, long nrh, long ncl, long nch)
-/* free an int matrix allocated by imatrix() */
-{
-        free((FREE_ARG) (m[nrl]+ncl-NR_END));
-        free((FREE_ARG) (m+nrl-NR_END));
-}
-
-void free_submatrix(float **b, long nrl, long nrh, long ncl, long nch)
-/* free a submatrix allocated by submatrix() */
-{
-        free((FREE_ARG) (b+nrl-NR_END));
-}
-
-void free_subdmatrix(double **b, long nrl, long nrh, long ncl, long nch)
-/* free a submatrix allocated by submatrix() */
-{
-        free((FREE_ARG) (b+nrl-NR_END));
-}
-
-void free_convert_matrix(float **b, long nrl, long nrh, long ncl, long nch)
-/* free a matrix allocated by convert_matrix() */
-{
-        free((FREE_ARG) (b+nrl-NR_END));
-}
-
-void free_f3tensor(float ***t, long nrl, long nrh, long ncl, long nch,
-        long ndl, long ndh)
-/* free a float f3tensor allocated by f3tensor() */
-{
-        free((FREE_ARG) (t[nrl][ncl]+ndl-NR_END));
-        free((FREE_ARG) (t[nrl]+ncl-NR_END));
-        free((FREE_ARG) (t+nrl-NR_END));
-}
 /* (C) Copr. 1986-92 Numerical Recipes Software 5.){2p491&.#@#Q0JS[. */
 
 void lubksb(double **a, int n, int *indx, double b[])
@@ -352,7 +282,6 @@ void ludcmp(double **a, int n, int *indx, double *d)
                         for (i=j+1;i<=n;i++) a[i][j] *= dum;
                 }
         }
-        free_dvector(vv,1,n);
 }
 
 #define M1 259200
@@ -708,10 +637,6 @@ void dmatrix_inv(double **A, double **invA, int n)
                 for (i=1;i<=n;i++) invA[i][j]=col[i];
         }
 
-        free_dvector(col,1,n);
-        free_ivector(indx,1,n);
-        free_dmatrix(tempA,1,n,1,n);
-
         return;
 }
 
@@ -757,7 +682,7 @@ int n,*iter;
         double fp,fae,fad,fac;
         double *xi,*g,*dg,*hdg,*dvector();
         double **hessin,**dmatrix();
-        void linmin(),nrerror(),free_dmatrix(),free_dvector();
+        void linmin(),nrerror();
 
         hessin=dmatrix(1,n,1,n);
         xi=dvector(1,n);
@@ -776,11 +701,6 @@ int n,*iter;
                 *iter=its;
                 linmin(p,xi,n,fret,func);
                 if (2.0*fabs(*fret-fp) <= ftol*(fabs(*fret)+fabs(fp)+EPS)) {
-                        free_dvector(hdg,1,n);
-                        free_dvector(dg,1,n);
-                        free_dvector(g,1,n);
-                        free_dvector(xi,1,n);
-                        free_dmatrix(hessin,1,n,1,n);
                         return;
                 }
                 fp=(*fret);
@@ -828,7 +748,7 @@ int n;
         int j;
         double xx,xmin,fx,fb,fa,bx,ax;
         double brent(),f1dim(),*dvector();
-        void mnbrak(),free_dvector();
+        void mnbrak();
         double maxxi;
 
         ncom=n;
@@ -854,9 +774,6 @@ int n;
                 xi[j] *= xmin;
                 p[j] += xi[j];
         }
-
-        free_dvector(xicom,1,n);
-        free_dvector(pcom,1,n);
 }
 
 #undef TOL
@@ -935,13 +852,11 @@ double x;
 {
         int j;
         double f,*xt,*dvector();
-        void free_dvector();
 
         xt=dvector(1,ncom);
         for (j=1;j<=ncom;j++) xt[j]=pcom[j]+x*xicom[j];
 
         f=(*nrfunc)(xt);
-        free_dvector(xt,1,ncom);
         return f;
 }
 

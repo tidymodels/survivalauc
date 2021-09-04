@@ -147,9 +147,6 @@ void DataM(int n, double *Y, double *D, int *L, double *uniqY, int *locY)
                 else if (D[i] == -1) locY[i]= locate_pos(uniqY,1,*L,Y[i]) + 1;
                 else locY[i] = locate_pos(uniqY,1,*L,Y[i]);
         }
-
-        free_dvector(ft,1,n); free_dvector(delta,1,n);
-        free_ivector(d,1,n);
 }
 
 // Define external variables
@@ -177,26 +174,6 @@ void coxph_alloc_memory(long n, long p)
         coxph_d1theta = dvector(1, p+n);
         coxph_d2theta = dmatrix(1, p+n, 1, p+n);
         coxph_cov = dmatrix(1, p+n, 1, p+n);
-}
-// Free memory for external variables
-void coxph_free_memory(long n, long p)
-{
-        free_ivector(coxph_ElocY, 1, n);
-        free_dvector(coxph_EDelta, 1, n);
-        free_dvector(coxph_EY, 1, n);
-        free_dvector(coxph_EuniqY, 1, n);
-        free_dmatrix(coxph_EX, 1, n, 1, p);
-        free_dvector(coxph_Ebeta, 1, p);
-        free_dvector(coxph_Elambda, 1, n);
-        free_dvector(coxph_ELambda, 1, n);
-
-        free_dvector(coxph_Ed1beta, 1, p);
-        free_dvector(coxph_Ed1lambda, 1, n);
-        free_dvector(coxph_theta, 1, p+n);
-        free_dvector(coxph_d1theta, 1, p+n);
-        free_dmatrix(coxph_d2theta, 1, p+n, 1, p+n);
-        free_dmatrix(coxph_cov, 1, p+n, 1, p+n);
-
 }
 
 /*
@@ -245,7 +222,6 @@ double coxph_logL(int n, int p, int *locY, double *Delta, double **X, double *be
 		sum += Delta[i]*(betaX + log(lambda[locY[i]])) - Lambda[locY[i]]*expbetaX;
         }
 
-        free_dvector(Lambda, 1, L);
         return sum;
 }
 
@@ -307,7 +283,6 @@ void coxph_d1logL(int n, int p, int *locY, double *Delta, double **X, double *be
                         d1lambda[locY[i]] += 1/lambda[locY[i]];
 		}
         }
-        free_dvector(Lambda, 1, L);
 }
 
 /*
@@ -380,8 +355,6 @@ void coxph_d2logL(int n, int p, int *locY, double *Delta, double **X, double *be
         for (j=1; j<=p+L; j++)
                 for (k=1; k<=j; k++)
         		d2theta[k][j] = d2theta[j][k];
-
-        free_dvector(Lambda, 1, L);
 }
 
 // function used in the quasi-Newton algorithm
@@ -496,8 +469,6 @@ void coxph(int n, double *Y, double *Delta, int p, double **X, double *beta, dou
 	// betase
 	for (j=1; j<=p; j++)
 		betase[j] = sqrt(cov[j][j]);
-
-	coxph_free_memory(n, p);
 }
 
 // Given the NPMLEs of beta and jump sizes of baseline cumulative hazard, calculate
