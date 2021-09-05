@@ -28,3 +28,11 @@ and time-dependent ROC curves.
 The corresponding estimators are presented in equations (9)-(11) in
 Chambless and Diao (Statistics in Medicine, 2006; 25: 3474-3486).
 }
+\examples{
+compute_auc_components(
+  time = sample_data$time,
+  status = sample_data$status,
+  score = sample_data$score,
+  threshold = sample_data$threshold
+)
+}

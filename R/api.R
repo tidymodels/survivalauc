@@ -19,6 +19,14 @@
 #'
 #' @return NULL
 #' @export
+#'
+#' @examples
+#' compute_auc_components(
+#'   time = sample_data$time,
+#'   status = sample_data$status,
+#'   score = sample_data$score,
+#'   threshold = sample_data$threshold
+#' )
 compute_auc_components <- function(time, status, score, threshold) {
 
   unique_time <- sort(unique(time))
