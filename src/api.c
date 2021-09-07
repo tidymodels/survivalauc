@@ -9,7 +9,6 @@ SEXP survivalauc_compute_auc_components(SEXP time,
                                         SEXP score,
                                         SEXP threshold_in,
                                         SEXP unique_time) {
-  // Replace with call to `AUCt()` and massaging of inputs/results
 
   double *Y, *D, *Z, *uniqY, *threshold;
   // `-1` is added here to make the vectors behave as 1-index to match the
@@ -32,8 +31,51 @@ SEXP survivalauc_compute_auc_components(SEXP time,
 
   AUCt(&n, Y, D, Z, &k, threshold, &m, uniqY, sens, spec, auc);
 
-  SEXP res = PROTECT(Rf_allocVector(VECSXP, 4));
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, 4));
+
+  SEXP uniqY_out = Rf_allocVector(REALSXP, m);
+  SET_VECTOR_ELT(out, 0, uniqY_out);
+  double* v_uniqY_out = REAL(uniqY_out);
+
+  for (int i = 1; i <= m; ++i) {
+    v_uniqY_out[i-1] = uniqY[i];
+  }
+
+  SEXP sens_out = Rf_allocMatrix(REALSXP, m, k);
+  SET_VECTOR_ELT(out, 1, sens_out);
+  double* v_sens_out = REAL(sens_out);
+  R_xlen_t sens_out_loc = 0;
+
+  for (int col = 1; col <= k; ++col) {
+    for (int row = 1; row <= m; ++row) {
+      // sens[row=1][col=1], sens[row=2][col=1], ...
+      v_sens_out[sens_out_loc] = sens[row][col];
+      ++sens_out_loc;
+    }
+  }
+
+  SEXP spec_out = Rf_allocMatrix(REALSXP, m, k);
+  SET_VECTOR_ELT(out, 2, spec_out);
+  double* v_spec_out = REAL(spec_out);
+  R_xlen_t spec_out_loc = 0;
+
+  for (int col = 1; col <= k; ++col) {
+    for (int row = 1; row <= m; ++row) {
+      // spec[row=1][col=1], spec[row=2][col=1], ...
+      v_spec_out[spec_out_loc] = spec[row][col];
+      ++spec_out_loc;
+    }
+  }
+
+  SEXP auc_out = Rf_allocVector(REALSXP, m);
+  SET_VECTOR_ELT(out, 3, auc_out);
+  double* v_auc_out = REAL(auc_out);
+
+  for (int i = 1; i <= m; ++i) {
+    v_auc_out[i-1] = auc[i];
+  }
+
   UNPROTECT(1);
 
-  return res;
+  return out;
 }
