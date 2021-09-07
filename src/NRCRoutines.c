@@ -432,7 +432,7 @@ double xx;
         return -tmp+log(2.50662827465*ser);
 }
 
-#define PI 3.141592654
+#define NR_PI 3.141592654
 
 double poidev(xm,idum)
 double xm;
@@ -462,7 +462,7 @@ long *idum;
                 }
                 do {
                         do {
-                                y=tan(PI*ran2(idum));
+                                y=tan(NR_PI*ran2(idum));
                                 em=sq*y+xm;
                         } while (em < 0.0);
                         em=floor(em);
@@ -472,7 +472,7 @@ long *idum;
         return em;
 }
 
-#undef PI
+#undef NR_PI
 
 
 #define IM1 2147483563
