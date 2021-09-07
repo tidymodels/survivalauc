@@ -69,7 +69,7 @@ double **dmatrix();
 int *ivector();
 int **imatrix();
 unsigned char *cvector();
-unsigned long *lvector()
+unsigned long *lvector();
 
 #endif /* ANSI */
 
