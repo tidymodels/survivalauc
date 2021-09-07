@@ -12,12 +12,26 @@
 #' specificity.
 #'
 #' @details
-#' `time`, `status`, and `score` must have the same length.
+#' `time`, `status`, and `score` must have the same length and be numeric.
 #'
-#' The corresponding estimators are presented in equations (9)-(11) in
-#' Chambless and Diao (Statistics in Medicine, 2006; 25: 3474-3486).
+#' @return  A list with 4 elements:
 #'
-#' @return NULL
+#' \describe{
+#'   \item{unique_times}{distinct observed failure times in ascending order.}
+#'   \item{sensitivity}{`m` by `k` matrix, the `(i,j)`th element corresponds
+#'                      to the estimated sensitivity at time point
+#'                      `unique_times[i]` with threshold `thresold[j]`}
+#'   \item{specificity}{`m` by `k` matrix, the `(i,j)`th element corresponds
+#'                      to the estimated specificity at time point
+#'                      `unique_times[i]` with threshold `thresold[j]`}
+#'   \item{auc}{the estimated AUC at time point `unique_times`}
+#' }
+#'
+#' @references
+#' Chambless, L. E. and G. Diao (2006). Estimation of time-dependent area under
+#' the ROC curve for long-term risk prediction. Statistics in Medicine 25,
+#' 3474--3486.
+#'
 #' @export
 #'
 #' @examples

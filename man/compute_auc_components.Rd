@@ -17,16 +17,27 @@ observed and 0 otherwise.}
 \item{threshold}{Numeric, thresholds used in estimating sensitivity and
 specificity.}
 }
+\value{
+A list with 4 elements:
+
+\describe{
+\item{unique_times}{distinct observed failure times in ascending order.}
+\item{sensitivity}{\code{m} by \code{k} matrix, the \verb{(i,j)}th element corresponds
+to the estimated sensitivity at time point
+\code{unique_times[i]} with threshold \code{thresold[j]}}
+\item{specificity}{\code{m} by \code{k} matrix, the \verb{(i,j)}th element corresponds
+to the estimated specificity at time point
+\code{unique_times[i]} with threshold \code{thresold[j]}}
+\item{auc}{the estimated AUC at time point \code{unique_times}}
+}
+}
 \description{
 Implementing the alternative estimators of the time-dependent area
 under the ROC curve, time-dependent sensitivity and specificity,
 and time-dependent ROC curves.
 }
 \details{
-\code{time}, \code{status}, and \code{score} must have the same length.
-
-The corresponding estimators are presented in equations (9)-(11) in
-Chambless and Diao (Statistics in Medicine, 2006; 25: 3474-3486).
+\code{time}, \code{status}, and \code{score} must have the same length and be numeric.
 }
 \examples{
 compute_auc_components(
@@ -35,4 +46,9 @@ compute_auc_components(
   score = sample_data$score,
   threshold = sample_data$threshold
 )
+}
+\references{
+Chambless, L. E. and G. Diao (2006). Estimation of time-dependent area under
+the ROC curve for long-term risk prediction. Statistics in Medicine 25,
+3474--3486.
 }
