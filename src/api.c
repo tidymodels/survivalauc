@@ -33,6 +33,13 @@ SEXP survivalauc_compute_auc_components(SEXP time,
 
   SEXP out = PROTECT(Rf_allocVector(VECSXP, 4));
 
+  SEXP out_names = PROTECT(Rf_allocVector(STRSXP, 4));
+  SET_STRING_ELT(out_names, 0, Rf_mkChar("unique_times"));
+  SET_STRING_ELT(out_names, 1, Rf_mkChar("sensitivity"));
+  SET_STRING_ELT(out_names, 2, Rf_mkChar("specificity"));
+  SET_STRING_ELT(out_names, 3, Rf_mkChar("auc"));
+  Rf_setAttrib(out, R_NamesSymbol, out_names);
+
   SEXP uniqY_out = Rf_allocVector(REALSXP, m);
   SET_VECTOR_ELT(out, 0, uniqY_out);
   double* v_uniqY_out = REAL(uniqY_out);
@@ -75,7 +82,7 @@ SEXP survivalauc_compute_auc_components(SEXP time,
     v_auc_out[i-1] = auc[i];
   }
 
-  UNPROTECT(1);
+  UNPROTECT(2);
 
   return out;
 }
