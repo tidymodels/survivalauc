@@ -12,11 +12,13 @@ SEXP survivalauc_compute_auc_components(SEXP time,
   // Replace with call to `AUCt()` and massaging of inputs/results
 
   double *Y, *D, *Z, *uniqY, *threshold;
-  Y = REAL(time);
-  D = REAL(status);
-  Z = REAL(score);
-  threshold = REAL(threshold_in);
-  uniqY = REAL(unique_time);
+  // `-1` is added here to make the vectors behave as 1-index to match the
+  // expected behavior of numerical recipes
+  Y = REAL(time)-1;
+  D = REAL(status)-1;
+  Z = REAL(score)-1;
+  threshold = REAL(threshold_in)-1;
+  uniqY = REAL(unique_time)-1;
 
   int n, m, k;
   n = Rf_length(time);
