@@ -10,7 +10,10 @@ coverage](https://codecov.io/gh/tidymodels/survivalauc/branch/master/graph/badge
 [![R-CMD-check](https://github.com/tidymodels/survivalauc/workflows/R-CMD-check/badge.svg)](https://github.com/tidymodels/survivalauc/actions)
 <!-- badges: end -->
 
-The goal of survivalauc is to …
+The goal of survivalauc is to provide a function to calculate
+analternative method for estimating the time-dependent area under the
+ROC curve (AUC), sensitivity and specificity proposed in Chambless and
+Diao (Statistics in Medicine, 2006; 25, 3474–3486).
 
 ## Installation
 
