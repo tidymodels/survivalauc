@@ -43,6 +43,36 @@
 #' )
 compute_auc_components <- function(time, status, score, threshold) {
 
+  if (length(time) != length(status) || length(score) != length(status)) {
+    stop("`time`, `status`, and `score` must be the same length.")
+  }
+
+  if (any(is.na(time))) {
+    stop("`time` must not have any missing values.")
+  }
+  if (any(is.na(status))) {
+    stop("`status` must not have any missing values.")
+  }
+  if (any(is.na(score))) {
+    stop("`score` must not have any missing values.")
+  }
+  if (any(is.na(threshold))) {
+    stop("`threshold` must not have any missing values.")
+  }
+
+  if (!is.double(time)) {
+    stop("`time` must be a double vector.")
+  }
+  if (!all(status %in% c(0, 1))) {
+    stop("`status` must only take the values 0 and 1.")
+  }
+  if (!is.double(score)) {
+    stop("`score` must be a double vector.")
+  }
+  if (!is.double(threshold)) {
+    stop("`threshold` must be a double vector.")
+  }
+
   unique_time <- sort(unique(time))
 
   .Call(survivalauc_compute_auc_components, time, status, score, threshold,
